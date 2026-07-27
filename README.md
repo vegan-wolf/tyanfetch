@@ -19,7 +19,7 @@ tyanfetch - минималистичный и быстрый аналог neofet
    ```
    или
    ```bash
-   install.sh
+   ./install.sh
    ```
 5) Перезагрузите терминал:
    ```bash
