@@ -1,8 +1,11 @@
+#!/usr/bin/env python3
+
 import platform
 import os
 import psutil
 import random
 import subprocess
+import datetime
 
 colour_code = 36
 COLOUR = f"\033[1;{colour_code}m"
@@ -68,9 +71,9 @@ def find_info():
     kernel_type = platform.system()
     kernel_release = platform.release()
     os_name = get_os_name()
-    uptime = psutil.boot_time()
+    uptime = datetime.timedelta((datetime.datetime.now() - datetime.datetime.fromtimestamp(psutil.boot_time())).total_seconds())
 
-    packeges = get_package_count()
+    packages = get_package_count()
 
     mem = psutil.virtual_memory()
     mem_used = int(mem.used / 1024 / 1024)
@@ -92,15 +95,15 @@ def find_info():
 
     info_lines = [
         f"{COLOUR}{user}{WHITE}@{COLOUR}{name_comp}{RESET}",
-        f"{WHITE}" + "-" * (len(user) + len(name_comp) + 1) + f"{RESET}",
-        f"{COLOUR}OS:{RESET}      {os_name}",
-        f"{COLOUR}Kernel:{RESET}  {kernel_type} {kernel_release}",
-        f"{COLOUR}CPU:{RESET}     {get_cpu_model()}",
-        # f"{CYAN}GPU:{RESET}    {get_gpu_model()}",
-        f"{COLOUR}Uptime:{RESET}  {uptime}",
-        f"{COLOUR}Packages:{RESET}    {packeges}",
-        f"{COLOUR}Terminal:{RESET}    {terminal_name}",
-        f"{COLOUR}Memory:{RESET}  {mem_used} MiB / {mem_total} MiB",
+        f"{COLOUR}" + "-" * (len(user) + len(name_comp) + 1) + f"{RESET}",
+        f"{COLOUR}OS:{RESET}       {os_name}",
+        f"{COLOUR}Kernel:{RESET}   {kernel_type} {kernel_release}",
+        f"{COLOUR}CPU:{RESET}      {get_cpu_model()}",
+        # f"{CYAN}GPU:{RESET}     {get_gpu_model()}",
+        f"{COLOUR}Uptime:{RESET}   {uptime}",
+        f"{COLOUR}Packages:{RESET} {packages}",
+        f"{COLOUR}Terminal:{RESET} {terminal_name}",
+        f"{COLOUR}Memory:{RESET}   {mem_used} MiB / {mem_total} MiB",
         '',
         row1,
         row2,
@@ -119,13 +122,13 @@ def write_info(distro_logo_file):
     max_vert_len = max(len(distro_logo), len(info))
 
     for i in range(max_vert_len):
-        logo_part = distro_logo[i] if i < len(distro_logo) else ''
+        logo_part = distro_logo[i] if i < len(distro_logo) else ' '*max_hor_len
         info_part = info[i] if i < len(info) else ''
         print(f'{logo_part}    {info_part}')
 
 
 def main():
-    script_dir = os.path.dirname(os.path.abspath(__file__))
+    script_dir = os.path.dirname(os.path.realpath(__file__))
     num_distro_pic = os.path.join(script_dir, f'pics/pic{random.randint(1, 22)}.txt')
 
     write_info(num_distro_pic)
