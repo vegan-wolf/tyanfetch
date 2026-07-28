@@ -9,19 +9,11 @@ tyanfetch - минималистичный и быстрый аналог neofet
    ```bash
    cd tyanfetch
    ```
-3) Сделайте файл install.sh исполняймым:
+3) Пропишите комманду:
    ```bash
-   chmod +x install.sh
+   python3 setup.py install --user
    ```
-4) Запустите файл install.sh:
-   ```bash
-   bash install.sh
-   ```
-   или
-   ```bash
-   ./install.sh
-   ```
-5) Перезагрузите терминал:
+4) Перезагрузите терминал:
    ```bash
    exit
    ```
