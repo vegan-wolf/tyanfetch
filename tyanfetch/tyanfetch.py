@@ -6,11 +6,17 @@ import psutil
 import random
 import subprocess
 import datetime
+import time
 
 colour_code = 36
 COLOUR = f"\033[1;{colour_code}m"
 WHITE = "\033[1;37m"
 RESET = "\033[0m"
+
+
+def get_uptime():
+    uptime_seconds = time.clock_gettime(7)
+    return time.time() - uptime_seconds
 
 
 def get_os_name():
@@ -71,7 +77,7 @@ def find_info():
     kernel_type = platform.system()
     kernel_release = platform.release()
     os_name = get_os_name()
-    uptime = datetime.timedelta((datetime.datetime.now() - datetime.datetime.fromtimestamp(psutil.boot_time())).total_seconds())
+    uptime = datetime.timedelta(milliseconds=(get_uptime()))
 
     packages = get_package_count()
 
@@ -126,14 +132,11 @@ def write_info(distro_logo_file):
         info_part = info[i] if i < len(info) else ''
         print(f'{logo_part}    {info_part}')
 
-
-def main():
+def cli():
     script_dir = os.path.dirname(os.path.realpath(__file__))
     num_distro_pic = os.path.join(script_dir, f'pics/pic{random.randint(1, 22)}.txt')
 
     write_info(num_distro_pic)
 
-
-
 if __name__ == '__main__':
-    main()
+    cli()
