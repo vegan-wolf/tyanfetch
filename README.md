@@ -1,5 +1,35 @@
 tyanfetch - минималистичный и быстрый аналог neofetch, написанный на Python. В скрипте реализованно большинство фунций из neofetch. 
 
+Темы и их вызов:
+1) Красный
+   ```bash
+   tyanfetch red
+   ```
+2) Зеленый
+   ```bash
+   tyanfetch green
+   ```
+3) Желтый
+   ```bash
+   tyanfetch yellow
+   ```
+4) Фиолетовый:
+   ```bash
+   tyanfetch purple
+   ```
+5) Синий:
+   ```bash
+   tyanfetch blue
+   ```
+6) Голубой (цвет по умолчанию)
+   ```bash
+   tyanfetch cyan
+   ```
+7) Белый
+   ```bash
+   tyanfetch white
+   ```
+
 Установка:
 1) Склонируйте репозиторий: 
    ```bash
