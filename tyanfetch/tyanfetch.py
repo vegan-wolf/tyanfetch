@@ -6,17 +6,59 @@ import psutil
 import random
 import subprocess
 import datetime
-import time
+import sys
 
-colour_code = 36
-COLOUR = f"\033[1;{colour_code}m"
+
+COLORS = {
+    "red": "\033[1;31m",
+    "green": "\033[1;32m",
+    "yellow": "\033[1;33m",
+    "purple": "\033[1;34m",
+    "blue": "\033[1;35m",
+    "cyan": "\033[1;36m",
+    "white": "\033[1;37m",
+}
+RESET = "\033[0m"
+
+DEFAULT_COLOR = "cyan"
+
+def get_accent_color():
+
+    if len(sys.argv) > 1:
+        requested_color = sys.argv[1].lower()
+        if requested_color in COLORS:
+            return COLORS[requested_color]
+        else:
+            print(f"Предупреждение: Цвет '{requested_color}' не поддерживается. Ипользую {DEFAULT_COLOR}.")
+            print(f"Доступные цвета: {', '.join(COLORS.keys())}\n")
+
+    return COLORS[DEFAULT_COLOR]
+
+COLOUR = get_accent_color()
 WHITE = "\033[1;37m"
 RESET = "\033[0m"
 
 
 def get_uptime():
-    uptime_seconds = time.clock_gettime(7)
-    return time.time() - uptime_seconds
+    with open("/proc/uptime") as f:
+        inp = [float(i) for i in f.read().split()]
+
+    upt = datetime.timedelta(seconds=inp[0])
+    days = upt.days
+    hours, rem = divmod(int(upt.seconds), 3600)
+    minutes, seconds = divmod(rem, 60)
+    return f'{days} days, {hours} hours, {minutes} minutes, {seconds} seconds'
+
+
+"""
+    strg = subprocess.check_output(["uptime"], text=True).replace(',', '')
+    days = int(strg.split()[2])
+    if 'min' in strg:
+        hours = 0
+        minutes = int(strg[4])
+    else:
+        hours, minutes = map()
+"""
 
 
 def get_os_name():
@@ -77,7 +119,7 @@ def find_info():
     kernel_type = platform.system()
     kernel_release = platform.release()
     os_name = get_os_name()
-    uptime = datetime.timedelta(milliseconds=(get_uptime()))
+    uptime = get_uptime()
 
     packages = get_package_count()
 
