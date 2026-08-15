@@ -19,8 +19,8 @@ COLORS = {
     "white": "\033[1;37m",
 }
 RESET = "\033[0m"
-
 DEFAULT_COLOR = "cyan"
+
 
 def get_accent_color():
 
@@ -33,6 +33,7 @@ def get_accent_color():
             print(f"Доступные цвета: {', '.join(COLORS.keys())}\n")
 
     return COLORS[DEFAULT_COLOR]
+
 
 COLOUR = get_accent_color()
 WHITE = "\033[1;37m"
@@ -48,17 +49,6 @@ def get_uptime():
     hours, rem = divmod(int(upt.seconds), 3600)
     minutes, seconds = divmod(rem, 60)
     return f'{days} days, {hours} hours, {minutes} minutes, {seconds} seconds'
-
-
-"""
-    strg = subprocess.check_output(["uptime"], text=True).replace(',', '')
-    days = int(strg.split()[2])
-    if 'min' in strg:
-        hours = 0
-        minutes = int(strg[4])
-    else:
-        hours, minutes = map()
-"""
 
 
 def get_os_name():
