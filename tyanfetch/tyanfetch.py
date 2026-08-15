@@ -21,6 +21,7 @@ COLORS = {
 RESET = "\033[0m"
 DEFAULT_COLOR = "cyan"
 
+
 def get_accent_color():
 
     if len(sys.argv) > 1:
@@ -32,6 +33,7 @@ def get_accent_color():
             print(f"Доступные цвета: {', '.join(COLORS.keys())}\n")
 
     return COLORS[DEFAULT_COLOR]
+
 
 COLOUR = get_accent_color()
 WHITE = "\033[1;37m"
