@@ -7,6 +7,7 @@ import random
 import subprocess
 import datetime
 import sys
+import re
 
 
 COLORS = {
@@ -102,6 +103,28 @@ def get_package_count():
     return "Unknown"
 
 
+def rounded_box(info, padding=1):
+    pattern = re.compile(r'\x1b\[[0-9;]*m')
+    true_length = [len(pattern.sub('', line)) for line in info]
+    width = max(true_length) + padding*2
+
+    TOP_LEFT, TOP_RIGHT = "╭", "╮"
+    BOTTOM_LEFT, BOTTOM_RIGHT = "╰", "╯"
+    HORIZ, VERT = "─", "│"
+
+    top = f"{COLOUR}{TOP_LEFT}{HORIZ*width}{TOP_RIGHT}{RESET}"
+    bottom = f"{COLOUR}{BOTTOM_LEFT}{HORIZ*width}{BOTTOM_RIGHT}{RESET}"
+
+    result = [top]
+    for line, vlen in zip(info, true_length):
+        space = max(true_length) - vlen
+        nw_info = " "*padding + line + " "*space  +" "*padding
+        result.append(f"{COLOUR}{VERT}{RESET}{nw_info}{COLOUR}{VERT}{RESET}")
+
+    result.append(bottom)
+    return result
+
+
 def find_info():
     user = os.environ.get('USER') or os.environ.get('USERNAME') or 'root'
     name_comp = platform.node()
@@ -132,7 +155,7 @@ def find_info():
     row2 += RESET
 
     info_lines = [
-        f"{COLOUR}{user}{WHITE}@{COLOUR}{name_comp}{RESET}",
+        f"{COLOUR}{user}@{name_comp}{RESET}",
         f"{COLOUR}" + "-" * (len(user) + len(name_comp) + 1) + f"{RESET}",
         f"{COLOUR}OS:{RESET}       {os_name}",
         f"{COLOUR}Kernel:{RESET}   {kernel_type} {kernel_release}",
@@ -147,15 +170,20 @@ def find_info():
         row2,
     ]
 
-    return info_lines
+    result = rounded_box(info_lines)
+    return result
 
 def write_info(distro_logo_file):
     distro_logo = []
     with open(distro_logo_file, "r", encoding='utf-8') as f:
         for line in f:
             clean_line = line.strip('\n').strip('\n')
-            distro_logo.append(clean_line)
-    max_hor_len = max(len(line) for line in distro_logo)
+            distro_logo.append(f"{COLOUR}{clean_line}{RESET}")
+    pattern = re.compile(r'\x1b\[[0-9;]*m')
+    # print(distro_logo)
+    true_length = [len(pattern.sub('', line)) for line in distro_logo]
+
+    max_hor_len = max(true_length)
     info = find_info()
     max_vert_len = max(len(distro_logo), len(info))
 
