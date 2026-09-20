@@ -33,7 +33,7 @@ tyanfetch - минималистичный и быстрый аналог neofet
 Установка:
 1) Склонируйте репозиторий: 
    ```bash
-   git clone https://gihub.com/vegan-wolf/tyanfetch
+   git clone https://github.com/vegan-wolf/tyanfetch.git
    ```
 2) Перейдите в репозиторий:
    ```bash
