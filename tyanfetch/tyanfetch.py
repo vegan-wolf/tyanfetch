@@ -180,7 +180,6 @@ def write_info(distro_logo_file):
             clean_line = line.strip('\n').strip('\n')
             distro_logo.append(f"{COLOUR}{clean_line}{RESET}")
     pattern = re.compile(r'\x1b\[[0-9;]*m')
-    # print(distro_logo)
     true_length = [len(pattern.sub('', line)) for line in distro_logo]
 
     max_hor_len = max(true_length)
